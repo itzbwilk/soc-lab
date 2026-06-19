@@ -20,11 +20,23 @@ A home security operations center built to develop hands on incident response an
 ## Detections Built
 | Detection | MITRE Technique | SPL Search |
 |-----------|----------------|------------|
+| Inbound Port Scan Detection | T1046 | WindowsFirewallLog direction=RECEIVE count > 10 |
 | Failed Login Brute Force | T1110 | EventCode=4625 |
 | PowerShell Execution | T1059.001 | EventCode=1 CommandLine=*powershell* |
 | Credential Dumping | T1003.001 | EventCode=1 Image=*dumpert* |
 | System Discovery | T1082 | EventCode=1 |
-| Inbound Port Scan Detection | T1046 | WindowsFirewallLog direction=RECEIVE count > 10 |
+| Multi-Stage Attack Correlation | T1046 + T1110.001 | Correlated port scans and brute force events from src_ip across WindowsFirewallLog and XmlWinEventLog |
+
+## Correlation Searches
+
+### Port Scan -> Brute Force Correlation
+Detects a single source IP that appears in two seperate sourcetypes within a 60 minute window. Indicates a multi-stage attack where an attacker had performed reconnaissance before attempting access.
+
+index=main sourcetype="WindowsFirewallLog" earliest=-60m latest=now
+| eval attacker_ip=src_ip
+| union [search index=main sourcetype="XmlWinEventLog" earliest=-60m latest=now | eval attacker_ip=IpAddress]
+| stats dc(sourcetype) as source_count count by attacker_ip
+| where source_count > 1
 
 ## Attack Simulations Run
 
