@@ -4,6 +4,7 @@ A home security operations center built to develop hands on incident response an
 ## Lab Architecture
 - **Hypervisor** Microsoft Hyper-V on Windows 11
 - **Target VM** Windows 10 Pro (Desktop-8Q984MR)
+- **Attack VM** Kali Linux
 - **SIEM** Splunk Enterprise (free tier) on host machine
 - **Endpoint Logging** Sysmon v15 with SwiftOnSecurity config
 - **Log Forwarding** Splunk Universal Forwarder -> Splunk Enterprise via TCP 9997
@@ -14,6 +15,7 @@ A home security operations center built to develop hands on incident response an
 |--------|-----------|-------------|
 | Windows Security Log | WinEventLog | Authentication events, failed logins |
 | Sysmon Operational | XmlWinEventLog | Process creation, network connections, file events |
+| Windows Firewall Log | WindowsFirewallLog | Inbound/outbound connection records
 
 ## Detections Built
 | Detection | MITRE Technique | SPL Search |
@@ -22,6 +24,7 @@ A home security operations center built to develop hands on incident response an
 | PowerShell Execution | T1059.001 | EventCode=1 CommandLine=*powershell* |
 | Credential Dumping | T1003.001 | EventCode=1 Image=*dumpert* |
 | System Discovery | T1082 | EventCode=1 |
+| Inbound Port Scan Detection | T1046 | WindowsFirewallLog direction=RECEIVE count > 10 |
 
 ## Attack Simulations Run
 
@@ -37,6 +40,12 @@ reconnaissance activity post-dump.
 ### T1082 — System Discovery
 Simulated attacker reconnaissance including Griffon recon framework and Machine GUID 
 enumeration. Detected via process creation logs showing discovery tool execution.
+
+### T1046 — Network Port Scan
+Ran nmap from Kali Linux against Windows VM. Detected via Windows Firewall log monitoring inbound RECEIVE connections exceeding threshold from single source IP.
+
+### T1110.001 — RDP Brute Force
+Ran Hydra from Kali Linux against RDP (Port 3389) using rockyou.txt wordlist. Detected via Security log EventCode 4625 failed login events exceeding threshold from single source IP. 
 
 ## Dashboard
 
@@ -74,15 +83,16 @@ Built a SOC Lab Dashboard in Splunk with three panels:
 
 ## Key Lessons Learned
 
-- Splunk Universal Forwarder requires LocalSystem privileges to read Sysmon event logs
-- Windows TA must be installed on both the forwarder and the Splunk indexer for proper XML parsing
-- Raw .evtx file monitoring produces binary data — WinEventLog API inputs are required
-- Execution policy must be set to RemoteSigned for Atomic Red Team to run
+- Splunk Universal Forwarder requires LocalSystem privileges to read Sysmon event logs.
+- Windows TA must be installed on both the forwarder and the Splunk indexer for proper XML parsing.
+- Raw .evtx file monitoring produces binary data — WinEventLog API inputs are required.
+- Execution policy must be set to RemoteSigned for Atomic Red Team to run.
+- Splunk stanza is a way to config headers for log inputs. The header is in brackets and everything below that bracket are settings that apply to that header/log inputs.
+- I learned that Splunk can easily parse information from XML format, but can't with plain-text. Using renderXml = true makes it easier to break the logs into the various fields. Without it, fields like EventCode and IpAddress wouldn't get extracted.
+- I was running into an issue where I had the correct stanza in the wrong place. I learned that Splunk follows a precedence order on where it pulls the stanza from. The system level takes priority over the apps level. So, etc\system\local (location of incorrect stanza) has priority over etc\apps\Splunk_TA_windows (location of correct stanza).
 
 ## Next Steps
 
-- [ ] Add Kali Linux VM for network-based attack simulation
-- [ ] Build automated alerting for brute force detection
 - [ ] Simulate lateral movement with T1021.001
 - [ ] Build correlation searches for multi-stage attack detection
 - [ ] Document full incident report from simulated attack chain
