@@ -27,6 +27,7 @@ A home security operations center built to develop hands on incident response an
 
 ### Port Scan -> Brute Force Correlation
 Detects a single source IP that appears in two seperate sourcetypes within a 60 minute window. Indicates a multi-stage attack where an attacker had performed reconnaissance before attempting access.
+
 ...
 index=main sourcetype="WindowsFirewallLog" earliest=-60m latest=now
 | eval attacker_ip=src_ip
