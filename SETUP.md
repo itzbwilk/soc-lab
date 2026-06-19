@@ -18,7 +18,7 @@ A home security operations center built to develop hands on incident response an
 - Windows 10 VM running in Hyper-V
 - Kali Linux VM running in Hyper-V (attack simulation)
 
-### Installation Steps### Installation Steps
+### Installation Steps
 
 1. Install Sysmon on target VM with SwiftOnSecurity config:
 ```
