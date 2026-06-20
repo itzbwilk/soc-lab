@@ -4,9 +4,13 @@ A home security operations center built to develop hands on incident response an
 ## Log Sources
 | Source | Sourcetype | Description |
 |--------|-----------|-------------|
-| Windows Security Log | WinEventLog | Authentication events, failed logins |
+| Windows Security Log | XmlWinEventLog | Authentication events, failed logins (source="XmlWinEventLog:Security")|
 | Sysmon Operational | XmlWinEventLog | Process creation, network connections, file events |
 | Windows Firewall Log | WindowsFirewallLog | Inbound/outbound connection records
+
+**Note:** Both Sysmon and Windows Security Log events share the `XmlWinEventLog` sourcetype. 
+Use `source="XmlWinEventLog:Security"` to filter Security log events and 
+`source="XmlWinEventLog:Microsoft-Windows-Sysmon/Operational"` for Sysmon events.
 
 ## Alerts
 - Inbound Port Scan Detection - Scheduled every 5 minutes
@@ -70,7 +74,6 @@ Built a SOC Lab Dashboard in Splunk with three panels:
 - [ ] Simulate lateral movement T1021.001 (RDP lateral movement to a second target)
 - [ ] Build a daily summary report (failed logins, top talkers)
 - [ ] Write full incident report chaining port scan → brute force → correlation
-- [ ] Set static IPs on Hyper-V VMs to eliminate IP drift between sessions
 - [ ] Explore Caldera for automated adversary emulation
 
 ## Author
