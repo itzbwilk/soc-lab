@@ -35,7 +35,7 @@ Detects a single source IP that appears in two separate sourcetypes within a 60 
 ```
 index=main sourcetype="WindowsFirewallLog" earliest=-60m latest=now
 | eval attacker_ip=src_ip
-| union [search index=main sourcetype="XmlWinEventLog" earliest=-60m latest=now | eval attacker_ip=IpAddress]
+| union [search index=main sourcetype="XmlWinEventLog" source="XmlWinEventLog:Security" earliest=-60m latest=now | eval attacker_ip=IpAddress]
 | stats dc(sourcetype) as source_count count by attacker_ip
 | where source_count > 1
 ```
