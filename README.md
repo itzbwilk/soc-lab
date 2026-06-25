@@ -69,11 +69,16 @@ Built a SOC Lab Dashboard in Splunk with three panels:
 - Process Creation — monitors all process spawning with full command lines
 - Network Connections — tracks outbound connections by process and destination
 
+## Incident Reports
+| Report | Date | Summary |
+|--------|------|---------|
+| [IR-001 — Port Scan to RDP Access](incident-reports/IR-001_Port-Scan-to-RDP-Access_2026-06-24.pdf) | 2026-06-24 | Port scan → brute force → RDP access simulation and detection |
+
 ## Next Steps
 
 - [ ] Simulate lateral movement T1021.001 (RDP lateral movement to a second target)
 - [ ] Build a daily summary report (failed logins, top talkers)
-- [ ] Write full incident report chaining port scan → brute force → correlation
+- [x] Write full incident report chaining port scan → brute force → correlation
 - [ ] Explore Caldera for automated adversary emulation
 
 ## Author
