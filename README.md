@@ -84,11 +84,14 @@ Built a SOC Lab Dashboard in Splunk with three panels:
 ## Network Architecture
 
 ### Current Lab
+<div align="center">
+
 ![Current Lab Architecture](diagrams/SOC-Lab-Current-Architecture.png)
+
+</div>
 
 ### Target Architecture
 ![Target Architecture](diagrams/SOC-Lab-Target-Architecture.png)
-
 ## Author
 
 Brandon Wilkinson — Cybersecurity Student at MSU Denver | Cybersecurity Intern at ULA  
