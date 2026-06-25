@@ -1,7 +1,7 @@
-## Network architecture 
+## Network Architecture
 
 ### Current Lab
-![Current Lab Architecture](diagrams/SOC-Lab-Current-Architecture.png)
+![Current Lab Architecture](SOC-Lab-Current-Architecture.png)
 
 ### Target Architecture
-![Target Architecture](diagrams/SOC-Lab-Target-Architecture.png)
+![Target Architecture](SOC-Lab-Target-Architecture.png)
