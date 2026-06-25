@@ -81,6 +81,14 @@ Built a SOC Lab Dashboard in Splunk with three panels:
 - [x] Write full incident report chaining port scan → brute force → correlation
 - [ ] Explore Caldera for automated adversary emulation
 
+## Network Architecture
+
+### Current Lab
+![Current Lab Architecture](diagrams/SOC-Lab-Current-Architecture.png)
+
+### Target Architecture
+![Target Architecture](diagrams/SOC-Lab-Target-Architecture.png)
+
 ## Author
 
 Brandon Wilkinson — Cybersecurity Student at MSU Denver | Cybersecurity Intern at ULA  
